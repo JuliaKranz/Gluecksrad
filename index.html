@@ -13,18 +13,6 @@
             padding: 20px;
             position: relative;
         }
-        #banner {
-            position: relative;
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border: 1px solid #000;
-            display: inline-block;
-        }
         #wheel-container {
             position: relative;
             margin: 20px auto;
@@ -149,7 +137,6 @@
     </style>
 </head>
 <body>
-    <div id="banner">Verena's Glücksrad</div>
     <div id="subs-left-container">
         Noch <span id="subs-left">5</span> Abos
     </div>
@@ -218,18 +205,21 @@
             spinCounterElement.textContent = spinCounter;
 
             const rotationSpeed = 10; // Dauer der Drehung in Sekunden
+            const slowDownSpeed = 2; // Extra Zeit am Ende in Sekunden
             const baseRotation = 3600; // Basisrotation für mehrere Umdrehungen
             const randomRotation = Math.floor(Math.random() * 360);
             currentRotation += baseRotation + randomRotation;
 
-            document.getElementById('wheel').style.transition = `transform ${rotationSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
+            // Setze die Übergangszeit auf die normale Drehung + die extra Zeit zum Verlangsamen
+            document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
             document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
 
+            // Verwende die normale Drehzeit + die extra Zeit für das Verlangsamen
             setTimeout(() => {
-                isSpinning = false;
+                // Setze den Übergang zurück, nachdem das Rad gestoppt ist
                 document.getElementById('wheel').style.transition = 'none';
 
-                // 6 Sekunden Verzögerung hinzufügen
+                // Verzögerung am Ende für das langsame Stoppen des Rades
                 setTimeout(() => {
                     if (spinCounter > 0) {
                         spinButton.disabled = false;
@@ -238,8 +228,9 @@
                         spinButton.style.display = 'none';
                         spinCounterContainer.style.display = 'none';
                     }
-                }, 6000); // 6000 Millisekunden = 6 Sekunden
-            }, rotationSpeed * 1000);
+                    isSpinning = false;
+                }, slowDownSpeed * 1000); // 2000 Millisekunden = 2 Sekunden
+            }, (rotationSpeed + slowDownSpeed) * 1000); // Gesamtzeit der Drehung und Verlangsamung
         }
 
         document.getElementById('spinButton').addEventListener('click', spinWheel);
