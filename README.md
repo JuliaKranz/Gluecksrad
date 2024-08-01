@@ -1,10 +1,5 @@
 # Glücksrad Projekt
 
--- [Live-Demo] (https://juliakranz.github.io/Gluecksrad/index.html) um das Glücksrad in Aktion zu sehen  -- Version 1.0
+-- [Live Demo] (https://juliakranz.github.io/Gluecksrad/index.html) to see the wheel in action —- Version 1.0 --
 
-
-- Um das Overlay (index.html) herunterzuladen -
--> auf die Datei 
--> raw 
--> rechtsklick 
--> als eine .html Datei speichern
+To download the overlay (index.html) —> click on the file -> raw -> right-click -> save as a .html file
