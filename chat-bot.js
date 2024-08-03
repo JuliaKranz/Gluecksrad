@@ -1,10 +1,10 @@
+require('dotenv').config();
 const tmi = require('tmi.js');
 
-// Ersetze diese Werte durch deine eigenen
 const opts = {
     identity: {
-        username: 'reblgamebot',
-        password: 'y8pvgg5ly5yws391m60jmar1c33nd4' // OAuth-Token siehe https://twitchapps.com/tmi/
+        username: process.env.TWITCH_USERNAME,
+        password: process.env.TWITCH_OAUTH_TOKEN
     },
     channels: [
         'reblgame'
