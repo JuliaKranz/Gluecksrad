@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glücksradoverlay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,7 +25,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 5px solid #333;
+            border: 5px solid #000; /* Innerer schwarzer Rand des Glücksrads */
             position: relative;
             background: conic-gradient(
                 #ffecb3 0% 11%, #ffecb3 11% 11.1%,
@@ -37,6 +38,7 @@
                 #ce93d8 77.7% 88.7%, #ce93d8 88.7% 88.8%,
                 #ffcc80 88.8% 100%
             );
+            box-shadow: 0 0 20px rgba(0, 0, 0, 5555); /* Schatten für 2D-Optik */
         }
         #pointer {
             position: absolute;
@@ -46,7 +48,7 @@
             height: 0;
             border-top: 20px solid transparent;
             border-bottom: 20px solid transparent;
-            border-left: 40px solid #333;
+            border-left: 40px solid #000; /* Pointer auf schwarz setzen */
             transform: translateY(-50%) scaleX(-1);
             z-index: 10;
         }
@@ -55,30 +57,50 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem;
-            color: #333;
+            font-size: 2rem; /* Kleinere Größe */
+            color: #000; /* Schwarze Farbe für das Geschenk */
             z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fa-gift {
+            position: relative;
+            animation: spin 10s linear infinite; /* Langsame Rotation */
+        }
+        .fa-gift::before {
+            content: "\f06b"; /* Unicode für das Geschenk-Icon */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .wheel-label {
             position: absolute;
-            width: 100px;
-            height: 20px;
+            width: 100px; /* Breite des Labels */
+            height: 100px; /* Höhe des Labels, kann angepasst werden */
             background: transparent;
             color: #000;
-            font-size: 14px;
+            font-size: 28px;
             text-align: center;
+            line-height: 100px; /* Gleicher Wert wie die Höhe für vertikale Zentrierung */
             transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Zentriert den Text horizontal */
+            transform: translate(-50%, -50%); /* Zentriert das Label an seiner Position */
         }
-        #label1 { top: 10%; left: 63%; transform: translateX(-50%) rotate(270deg); }
-        #label2 { top: 25.5%; left: 85%; transform: translateX(-50%) rotate(315deg); }
-        #label3 { top: 55%; left: 93%; transform: translateX(-50%) rotate(0deg); }
-        #label4 { top: 79.5%; left: 79%; transform: translateX(-50%) rotate(45deg); }
-        #label5 { top: 90%; left: 50%; transform: translateX(-50%) rotate(90deg); }
-        #label6 { top: 77.5%; left: 25%; transform: translateX(-50%) rotate(135deg); }
-        #label7 { top: 55%; left: 10%; transform: translateX(-50%) rotate(180deg); }
-        #label8 { top: 25.5%; left: 14%; transform: translateX(-50%) rotate(225deg); }
-        #label9 { top: 10%; left: 38%; transform: translateX(-50%) rotate(270deg); }
-       
+        #label1 { top: 10%; left: 63%; transform: translate(-50%, -50%) rotate(270deg); }
+        #label2 { top: 25.5%; left: 85%; transform: translate(-50%, -50%) rotate(315deg); }
+        #label3 { top: 55%; left: 93%; transform: translate(-50%, -50%) rotate(0deg); }
+        #label4 { top: 79.5%; left: 79%; transform: translate(-50%, -50%) rotate(45deg); }
+        #label5 { top: 90%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); }
+        #label6 { top: 77.5%; left: 25%; transform: translate(-50%, -50%) rotate(135deg); }
+        #label7 { top: 55%; left: 10%; transform: translate(-50%, -50%) rotate(180deg); }
+        #label8 { top: 25.5%; left: 14%; transform: translate(-50%, -50%) rotate(225deg); }
+        #label9 { top: 10%; left: 38%; transform: translate(-50%, -50%) rotate(270deg); }
         #subs-left-container {
             position: absolute;
             top: 400px;
@@ -102,6 +124,7 @@
             border: 1px solid #000;
             font-size: 1rem;
             color: #fff;
+            display: none; /* Verstecke den Container standardmäßig */
         }
         #spin-counter-container {
             position: absolute;
@@ -149,7 +172,9 @@
     <div id="wheel-container">
         <div id="pointer"></div>
         <div id="wheel">
-            <div id="gift">&#127873;</div>
+            <div id="gift">
+                <i class="fas fa-gift"></i>
+            </div>
             <div class="wheel-label" id="label1">A</div>
             <div class="wheel-label" id="label2">B</div>
             <div class="wheel-label" id="label3">C</div>
@@ -170,10 +195,12 @@
         const spinCounterElement = document.getElementById('spin-counter');
         const spinCounterContainer = document.getElementById('spin-counter-container');
         const subsLeftContainer = document.getElementById('subs-left-container');
+        const totalSubsContainer = document.getElementById('total-subs-container');
         let totalSubs = 0; // Unsichtbarer Counter für alle verschenkten Subs
         let spinCounter = 0; // Counter für offene Drehungen
         let currentRotation = 0;
         let isSpinning = false;
+        let totalSubsTimeout;
 
         function updateSubCount() {
             totalSubs++;
@@ -190,58 +217,79 @@
             if (totalSubs % 5 === 0) {
                 spinCounter++;
                 spinCounterElement.textContent = spinCounter;
-                wheelContainer.style.display = 'block';
-                spinButton.style.display = 'block';
                 spinCounterContainer.style.display = 'block';
+                wheelContainer.style.display = 'block';
+                updateButtonVisibility();
+            }
+        }
+
+        function updateButtonVisibility() {
+            if (spinCounter > 0) {
+                spinButton.style.display = 'block';
+                spinButton.disabled = false; // Button aktivieren, wenn er sichtbar ist
+            } else {
+                spinButton.style.display = 'none';
             }
         }
 
         function spinWheel() {
-            if (isSpinning || spinCounter === 0) return;
-            isSpinning = true;
-            spinCounter--;
+    if (isSpinning || spinCounter === 0) return;
+    isSpinning = true;
+    spinCounter--;
 
-            spinButton.disabled = true;
-            spinCounterElement.textContent = spinCounter;
+    spinCounterElement.textContent = spinCounter;
+    updateButtonVisibility();
 
-            const rotationSpeed = 10; // Dauer der Drehung in Sekunden
-            const slowDownSpeed = 2; // Extra Zeit am Ende in Sekunden
-            const baseRotation = 3600; // Basisrotation für mehrere Umdrehungen
-            const randomRotation = Math.floor(Math.random() * 360);
-            currentRotation += baseRotation + randomRotation;
+    const rotationSpeed = 10; // Dauer der Drehung in Sekunden
+    const slowDownSpeed = 2; // Extra Zeit am Ende in Sekunden
+    const baseRotation = 3600; // Basisrotation für mehrere Umdrehungen
+    const randomRotation = Math.floor(Math.random() * 360);
+    currentRotation += baseRotation + randomRotation;
 
-            // Setze die Übergangszeit auf die normale Drehung + die extra Zeit zum Verlangsamen
-            document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
-            document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
+    document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
+    document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
 
-            // Verwende die normale Drehzeit + die extra Zeit für das Verlangsamen
-            setTimeout(() => {
-                // Setze den Übergang zurück, nachdem das Rad gestoppt ist
-                document.getElementById('wheel').style.transition = 'none';
-
-                // Verzögerung am Ende für das langsame Stoppen des Rades
+    setTimeout(() => {
+        document.getElementById('wheel').style.transition = 'none';
+        setTimeout(() => {
+            isSpinning = false;
+            if (spinCounter === 0) {
                 setTimeout(() => {
-                    if (spinCounter > 0) {
-                        spinButton.disabled = false;
-                    } else {
-                        wheelContainer.style.display = 'none';
-                        spinButton.style.display = 'none';
-                        spinCounterContainer.style.display = 'none';
-                    }
-                    isSpinning = false;
-                }, slowDownSpeed * 1000); // 2000 Millisekunden = 2 Sekunden
-            }, (rotationSpeed + slowDownSpeed) * 1000); // Gesamtzeit der Drehung und Verlangsamung
+                    wheelContainer.style.display = 'none';
+                    spinCounterContainer.style.display = 'none';
+                }, 4000);
+            }
+        }, slowDownSpeed * 1000);
+    }, (rotationSpeed + slowDownSpeed) * 1000);
+}
+
+
+        function showTotalSubsFor10Seconds() {
+            totalSubsContainer.style.display = 'block';
+            clearTimeout(totalSubsTimeout);
+            totalSubsTimeout = setTimeout(() => {
+                totalSubsContainer.style.display = 'none';
+            }, 10000);
         }
 
         document.getElementById('spinButton').addEventListener('click', spinWheel);
 
-        // Simulate sub count update (e.g., via a bot oder external event)
         function simulateSub() {
             updateSubCount();
         }
 
-        // Example: simulate a sub every 5 seconds for testing
-        setInterval(simulateSub, 1000);
+        setInterval(simulateSub, 5000);
+
+        async function handleRequest() {
+            const response = await fetch('/show-subs');
+            const data = await response.json();
+
+            if (data.action === 'show') {
+                showTotalSubsFor10Seconds();
+            }
+        }
+
+        setInterval(handleRequest, 1000);
     </script>
 </body>
 </html>
