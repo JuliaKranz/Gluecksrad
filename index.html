@@ -41,17 +41,18 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Schatten für 2D-Optik */
         }
         #pointer {
-            position: absolute;
-            top: 50%;
-            right: -31px; /* Pfeil weiter nach rechts verschieben */
-            width: 0;
-            height: 0;
-            border-top: 20px solid transparent;
-            border-bottom: 20px solid transparent;
-            border-left: 40px solid #000; /* Pointer auf schwarz setzen */
-            transform: translateY(-50%) scaleX(-1);
-            z-index: 10;
-        }
+    position: absolute;
+    top: -7%; 
+    left: 52%; /* In der Mitte des Rads platzieren */
+    transform: translateX(-50%); /* Horizontal zentrieren */
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #000; /* Pfeil nach unten zeigen */
+    z-index: 10;
+}
+
         #gift {
             position: absolute;
             top: 50%;
@@ -195,18 +196,19 @@
         ];
 
         function positionLabels() {
-            labels.forEach(label => {
-                const element = document.getElementById(label.id);
-                const angle = label.angle;
-                const radius = 120; // Radius des Kreises, in dem sich die Labels befinden
-                const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
-                const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+    labels.forEach(label => {
+        const element = document.getElementById(label.id);
+        const angle = label.angle;
+        const radius = 120; // Radius des Kreises, in dem sich die Labels befinden
+        const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+        const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
 
-                element.style.left = `calc(50% + ${x}px)`;
-                element.style.top = `calc(50% + ${y}px)`;
-                element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-            });
-        }
+        element.style.left = `calc(50% + ${x}px)`;
+        element.style.top = `calc(50% + ${y}px)`;
+        element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+    });
+}
+
 
         const wheelContainer = document.getElementById('wheel-container');
         const spinButton = document.getElementById('spinButton');
