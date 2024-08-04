@@ -41,29 +41,37 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Schatten für 2D-Optik */
         }
         #pointer {
+            position: absolute;
+            top: -7%; 
+            left: 52%; /* In der Mitte des Rads platzieren */
+            transform: translateX(-50%); /* Horizontal zentrieren */
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #000; /* Pfeil nach unten zeigen */
+            z-index: 10;
+        }
+        #gift {
     position: absolute;
-    top: -7%; 
-    left: 52%; /* In der Mitte des Rads platzieren */
-    transform: translateX(-50%); /* Horizontal zentrieren */
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 40px solid #000; /* Pfeil nach unten zeigen */
-    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem; /* Kleinere Größe, anpassen nach Bedarf */
+    color: #000; /* Schwarze Farbe für das Geschenk */
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Angepasste Breite */
+    height: 80px; /* Angepasste Höhe */
 }
 
-        #gift {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem; /* Kleinere Größe */
-            color: #000; /* Schwarze Farbe für das Geschenk */
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+#gift img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
         }
         .fa-gift {
             position: relative;
@@ -78,22 +86,21 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-       .wheel-label {
-    position: absolute;
-    width: 80px; /* Breite des Labels */
-    height: 80px; /* Höhe des Labels */
-    background: transparent;
-    color: #000;
-    font-size: 24px;
-    text-align: center;
-    line-height: 80px; /* Gleicher Wert wie die Höhe für vertikale Zentrierung */
-    transform-origin: center center;
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Zentriert den Text horizontal */
-    transform: translate(-50%, -50%) rotate(0deg); /* Entfernen der Rotation hier */
-}
-
+        .wheel-label {
+            position: absolute;
+            width: 80px; /* Breite des Labels */
+            height: 80px; /* Höhe des Labels */
+            background: transparent;
+            color: #000;
+            font-size: 24px;
+            text-align: center;
+            line-height: 80px; /* Gleicher Wert wie die Höhe für vertikale Zentrierung */
+            transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Zentriert den Text horizontal */
+            transform: translate(-50%, -50%) rotate(0deg); /* Entfernen der Rotation hier */
+        }
         #subs-left-container {
             position: absolute;
             top: 350px;
@@ -168,7 +175,7 @@
         <div id="pointer"></div>
         <div id="wheel">
             <div id="gift">
-                <i class="fas fa-gift"></i>
+                <img src="compass_cutout.png" alt="Kompass" />
             </div>
             <div class="wheel-label" id="label1">A</div>
             <div class="wheel-label" id="label2">B</div>
@@ -196,19 +203,18 @@
         ];
 
         function positionLabels() {
-    labels.forEach(label => {
-        const element = document.getElementById(label.id);
-        const angle = label.angle;
-        const radius = 120; // Radius des Kreises, in dem sich die Labels befinden
-        const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
-        const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+            labels.forEach(label => {
+                const element = document.getElementById(label.id);
+                const angle = label.angle;
+                const radius = 120; // Radius des Kreises, in dem sich die Labels befinden
+                const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
 
-        element.style.left = `calc(50% + ${x}px)`;
-        element.style.top = `calc(50% + ${y}px)`;
-        element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
-    });
-}
-
+                element.style.left = `calc(50% + ${x}px)`;
+                element.style.top = `calc(50% + ${y}px)`;
+                element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+            });
+        }
 
         const wheelContainer = document.getElementById('wheel-container');
         const spinButton = document.getElementById('spinButton');
