@@ -57,7 +57,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem; /* Kleinere Größe */
+            font-size: 1.5rem; /* Kleinere Größe */
             color: #000; /* Schwarze Farbe für das Geschenk */
             z-index: 5;
             display: flex;
@@ -233,36 +233,35 @@
         }
 
         function spinWheel() {
-    if (isSpinning || spinCounter === 0) return;
-    isSpinning = true;
-    spinCounter--;
+            if (isSpinning || spinCounter === 0) return;
+            isSpinning = true;
+            spinCounter--;
 
-    spinCounterElement.textContent = spinCounter;
-    updateButtonVisibility();
+            spinCounterElement.textContent = spinCounter;
+            updateButtonVisibility();
 
-    const rotationSpeed = 10; // Dauer der Drehung in Sekunden
-    const slowDownSpeed = 2; // Extra Zeit am Ende in Sekunden
-    const baseRotation = 3600; // Basisrotation für mehrere Umdrehungen
-    const randomRotation = Math.floor(Math.random() * 360);
-    currentRotation += baseRotation + randomRotation;
+            const rotationSpeed = 10; // Dauer der Drehung in Sekunden
+            const slowDownSpeed = 2; // Extra Zeit am Ende in Sekunden
+            const baseRotation = 3600; // Basisrotation für mehrere Umdrehungen
+            const randomRotation = Math.floor(Math.random() * 360);
+            currentRotation += baseRotation + randomRotation;
 
-    document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
-    document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
+            document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
+            document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
 
-    setTimeout(() => {
-        document.getElementById('wheel').style.transition = 'none';
-        setTimeout(() => {
-            isSpinning = false;
-            if (spinCounter === 0) {
+            setTimeout(() => {
+                document.getElementById('wheel').style.transition = 'none';
                 setTimeout(() => {
-                    wheelContainer.style.display = 'none';
-                    spinCounterContainer.style.display = 'none';
-                }, 4000);
-            }
-        }, slowDownSpeed * 1000);
-    }, (rotationSpeed + slowDownSpeed) * 1000);
-}
-
+                    isSpinning = false;
+                    if (spinCounter === 0) {
+                        setTimeout(() => {
+                            wheelContainer.style.display = 'none';
+                            spinCounterContainer.style.display = 'none';
+                        }, 4000);
+                    }
+                }, slowDownSpeed * 1000);
+            }, (rotationSpeed + slowDownSpeed) * 1000);
+        }
 
         function showTotalSubsFor10Seconds() {
             totalSubsContainer.style.display = 'block';
@@ -278,7 +277,7 @@
             updateSubCount();
         }
 
-        setInterval(simulateSub, 5000);
+        setInterval(simulateSub, 3000);
 
         async function handleRequest() {
             const response = await fetch('/show-subs');
