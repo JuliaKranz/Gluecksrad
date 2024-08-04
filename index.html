@@ -38,7 +38,7 @@
                 #ce93d8 77.7% 88.7%, #ce93d8 88.7% 88.8%,
                 #ffcc80 88.8% 100%
             );
-            box-shadow: 0 0 20px rgba(0, 0, 0, 5555); /* Schatten für 2D-Optik */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Schatten für 2D-Optik */
         }
         #pointer {
             position: absolute;
@@ -77,30 +77,22 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .wheel-label {
-            position: absolute;
-            width: 100px; /* Breite des Labels */
-            height: 100px; /* Höhe des Labels, kann angepasst werden */
-            background: transparent;
-            color: #000;
-            font-size: 28px;
-            text-align: center;
-            line-height: 100px; /* Gleicher Wert wie die Höhe für vertikale Zentrierung */
-            transform-origin: center center;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Zentriert den Text horizontal */
-            transform: translate(-50%, -50%); /* Zentriert das Label an seiner Position */
-        }
-        #label1 { top: 10%; left: 63%; transform: translate(-50%, -50%) rotate(270deg); }
-        #label2 { top: 25.5%; left: 85%; transform: translate(-50%, -50%) rotate(315deg); }
-        #label3 { top: 55%; left: 93%; transform: translate(-50%, -50%) rotate(0deg); }
-        #label4 { top: 79.5%; left: 79%; transform: translate(-50%, -50%) rotate(45deg); }
-        #label5 { top: 90%; left: 50%; transform: translate(-50%, -50%) rotate(90deg); }
-        #label6 { top: 77.5%; left: 25%; transform: translate(-50%, -50%) rotate(135deg); }
-        #label7 { top: 55%; left: 10%; transform: translate(-50%, -50%) rotate(180deg); }
-        #label8 { top: 25.5%; left: 14%; transform: translate(-50%, -50%) rotate(225deg); }
-        #label9 { top: 10%; left: 38%; transform: translate(-50%, -50%) rotate(270deg); }
+       .wheel-label {
+    position: absolute;
+    width: 80px; /* Breite des Labels */
+    height: 80px; /* Höhe des Labels */
+    background: transparent;
+    color: #000;
+    font-size: 24px;
+    text-align: center;
+    line-height: 80px; /* Gleicher Wert wie die Höhe für vertikale Zentrierung */
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Zentriert den Text horizontal */
+    transform: translate(-50%, -50%) rotate(0deg); /* Entfernen der Rotation hier */
+}
+
         #subs-left-container {
             position: absolute;
             top: 350px;
@@ -110,7 +102,7 @@
             padding: 5px 10px;
             border-radius: 8px;
             border: 1px solid #000;
-	    box-shadow: 0 4px 6px rgba(5, 5, 5, 5); /* 2D Schatten für Tiefe */
+            box-shadow: 0 4px 6px rgba(5, 5, 5, 0.5); /* 2D Schatten für Tiefe */
             font-size: 1rem;
             color: #fff;
         }
@@ -128,19 +120,19 @@
             display: none; /* Verstecke den Container standardmäßig */
         }
         #spin-counter-container {
-    position: absolute;
-    top: 350px;
-    left: 75%;
-    transform: translateX(-145px);
-    background-color: #333;
-    padding: 5px 15px;
-    border-radius: 8px; /* Runde Ecken für einen weicheren Look */
-    border: 1px solid #000; /* Dunkle Umrandung für besseren Kontrast */
-    box-shadow: 0 4px 6px rgba(5, 5, 5, 5); /* 2D Schatten für Tiefe */
-    font-size: 1rem; /* Größere Schriftgröße für bessere Lesbarkeit */
-    color: #fff;
-    display: none; /* Counter verstecken */
-}
+            position: absolute;
+            top: 350px;
+            left: 75%;
+            transform: translateX(-145px);
+            background-color: #333;
+            padding: 5px 15px;
+            border-radius: 8px; /* Runde Ecken für einen weicheren Look */
+            border: 1px solid #000; /* Dunkle Umrandung für besseren Kontrast */
+            box-shadow: 0 4px 6px rgba(5, 5, 5, 0.5); /* 2D Schatten für Tiefe */
+            font-size: 1rem; /* Größere Schriftgröße für bessere Lesbarkeit */
+            color: #fff;
+            display: none; /* Counter verstecken */
+        }
         #spinButton {
             margin-top: 20px;
             padding: 10px 20px;
@@ -190,6 +182,32 @@
     </div>
     <button id="spinButton">Drehen</button>
     <script>
+        const labels = [
+            { id: 'label1', angle: 300 },
+            { id: 'label2', angle: 340 },
+            { id: 'label3', angle: 19 },
+            { id: 'label4', angle: 60 },
+            { id: 'label5', angle: 100 },
+            { id: 'label6', angle: 139 },
+            { id: 'label7', angle: 180 },
+            { id: 'label8', angle: 220 },
+            { id: 'label9', angle: 260 }
+        ];
+
+        function positionLabels() {
+            labels.forEach(label => {
+                const element = document.getElementById(label.id);
+                const angle = label.angle;
+                const radius = 120; // Radius des Kreises, in dem sich die Labels befinden
+                const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
+                const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
+
+                element.style.left = `calc(50% + ${x}px)`;
+                element.style.top = `calc(50% + ${y}px)`;
+                element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+            });
+        }
+
         const wheelContainer = document.getElementById('wheel-container');
         const spinButton = document.getElementById('spinButton');
         const subsLeftElement = document.getElementById('subs-left');
@@ -291,6 +309,8 @@
         }
 
         setInterval(handleRequest, 1000);
+
+        document.addEventListener('DOMContentLoaded', positionLabels);
     </script>
 </body>
 </html>
