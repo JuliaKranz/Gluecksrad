@@ -1,7 +1,7 @@
-# Glücksrad
+# Glücksrad Version 1.2 --
 This project is currently in progress
 
--- [Live Demo] (https://juliakranz.github.io/adventureWheel/) to see the wheel in action Version 1.2 --
+-- [Live Demo] (https://juliakranz.github.io/adventureWheel/) to see the wheel in action 
 
 To download the project click on <> code -> download ZIP file 
 
