@@ -24,7 +24,7 @@ This project is currently in progress
     [X] Implemented a function to fetch and handle server requests for showing subscriptions.
       
 
-     Incomplete Functions
+    Incomplete Functions
     [ ] Need to implement actual data fetching from the server instead of simulation.
     [ ] Allow dynamic configuration of wheel segments (labels and colors).
     [ ] Enhance the spin algorithm to ensure fair randomness and improve user experience.
