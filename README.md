@@ -3,8 +3,6 @@ This project is currently in progress
 
 -- [Live Demo] (https://juliakranz.github.io/adventureWheel/) to see the wheel in action 
 
-To download the project click on <> code -> download ZIP file 
-
     Completed Functions
     [X] Created the wheel layout with a colorful segmented design.
     [X] Added labels to the wheel.
