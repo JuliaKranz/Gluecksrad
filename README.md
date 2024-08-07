@@ -4,12 +4,9 @@ This project is currently in progress
 -- [Live Demo] (https://juliakranz.github.io/adventureWheel/) to see the wheel in action 
 
     Completed Functions
-    [X] Created the wheel layout with a colorful segmented design.
     [X] Added labels to the wheel.
     [X] Positioned the labels correctly using trigonometric functions.
     [X] Implemented the pointer at the top of the wheel.
-    [X] Added a center dot for visual reference.
-    [X] Added a gift icon at the center of the wheel.
     [X] Added containers for displaying the number of subscriptions left for the next spin.
     [X] Added a container for displaying the total number of gifted subscriptions.
     [X] Implemented a spin counter to track the number of available spins.
@@ -26,8 +23,6 @@ This project is currently in progress
 
     Incomplete Functions
     [ ] Need to implement actual data fetching from the server instead of simulation.
-    [ ] Allow dynamic configuration of wheel segments (labels and colors).
-    [ ] Enhance the spin algorithm to ensure fair randomness and improve user experience.
     [ ] Add error handling for fetch requests and other asynchronous operations.
     [ ] Additional UI enhancements such as animations, sound effects, and visual feedback for the spin result.
     [ ] Refactor the code for better readability and maintainability.
