@@ -19,8 +19,9 @@ This project is currently in progress
     [X] Updated the subscription counters dynamically.
     [X] Displayed the total number of subscriptions for a brief period when required.
     [X] Implemented a function to fetch and handle server requests for showing subscriptions.
-      
 
+I need to create a function that marks a field and either adds dashes or increments an individual counter
+      
     Incomplete Functions
     [ ] Need to implement actual data fetching from the server instead of simulation.
     [ ] Add error handling for fetch requests and other asynchronous operations.
