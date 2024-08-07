@@ -19,7 +19,7 @@
             margin: 20px auto;
             width: 300px;
             height: 300px;
-            display: none;
+            display: block; /* Immer sichtbar */
         }
         #wheel {
             width: 100%;
@@ -83,7 +83,7 @@
         }
         .fa-gift {
             position: relative;
-            animation: spin 10s linear infinite;
+            animation: spin 20s linear infinite; /* Dauer auf 20s verlängert */
         }
         .fa-gift::before {
             content: "\f06b";
@@ -121,6 +121,7 @@
             box-shadow: 0 4px 6px rgba(5, 5, 5, 0.5);
             font-size: 1rem;
             color: #fff; /* Text weiß */
+            display: none; /* Unsichtbar machen */
         }
         #total-subs-container {
             position: absolute;
@@ -158,7 +159,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none;
+            display: block; /* Immer sichtbar */
         }
         #spinButton:hover {
             background-color: #555;
@@ -212,10 +213,10 @@
         ];
 
         function positionLabels() {
+            const radius = 130;
             labels.forEach(label => {
                 const element = document.getElementById(label.id);
                 const angle = label.angle;
-                const radius = 120;
                 const x = Math.cos((angle - 90) * (Math.PI / 180)) * radius;
                 const y = Math.sin((angle - 90) * (Math.PI / 180)) * radius;
 
@@ -256,48 +257,28 @@
                 spinCounterElement.textContent = spinCounter;
                 spinCounterContainer.style.display = 'block';
                 wheelContainer.style.display = 'block';
-                updateButtonVisibility();
-            }
-        }
-
-        function updateButtonVisibility() {
-            if (spinCounter > 0) {
-                spinButton.style.display = 'block';
-                spinButton.disabled = false;
-            } else {
-                spinButton.style.display = 'none';
             }
         }
 
         function spinWheel() {
-            if (isSpinning || spinCounter === 0) return;
+            if (isSpinning) return;
             isSpinning = true;
-            spinCounter--;
 
-            spinCounterElement.textContent = spinCounter;
-            updateButtonVisibility();
+            spinButton.disabled = true; // Button deaktivieren
 
-            const rotationSpeed = 4;
-            const slowDownSpeed = 9;
-            const baseRotation = 3600;
-            const randomRotation = Math.floor(Math.random() * 360);
+            const rotationDuration = 12; // Gesamtdauer der Animation auf 12 Sekunden verlängert
+            const baseRotation = 720; // Anzahl der Basis-Drehungen (doppelt so viel wie in 12 Sekunden)
+            const randomRotation = Math.floor(Math.random() * 360); // Zufällige zusätzliche Rotation
             currentRotation += baseRotation + randomRotation;
 
-            document.getElementById('wheel').style.transition = `transform ${rotationSpeed + slowDownSpeed}s cubic-bezier(0.33, 1, 0.68, 1)`;
+            document.getElementById('wheel').style.transition = `transform ${rotationDuration}s cubic-bezier(0.23, 1, 0.32, 1)`;
             document.getElementById('wheel').style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
                 document.getElementById('wheel').style.transition = 'none';
-                setTimeout(() => {
-                    isSpinning = false;
-                    if (spinCounter === 0) {
-                        setTimeout(() => {
-                            wheelContainer.style.display = 'none';
-                            spinCounterContainer.style.display = 'none';
-                        }, 4000);
-                    }
-                }, slowDownSpeed * 1000);
-            }, (rotationSpeed + slowDownSpeed) * 1000);
+                spinButton.disabled = false; // Button wieder aktivieren
+                isSpinning = false;
+            }, rotationDuration * 1000);
         }
 
         function showTotalSubsFor10Seconds() {
@@ -308,13 +289,9 @@
             }, 10000);
         }
 
-        document.getElementById('spinButton').addEventListener('click', spinWheel);
-
-        function simulateSub() {
-            updateSubCount();
-        }
-
-        setInterval(simulateSub, 1000);
+        document.getElementById('spinButton').addEventListener('click', () => {
+            spinWheel();
+        });
 
         async function handleRequest() {
             const response = await fetch('/show-subs');
@@ -363,8 +340,6 @@
                 console.log('Status OK:', message.d);
             }
         };
-
-        setInterval(handleRequest, 1000);
 
         document.addEventListener('DOMContentLoaded', positionLabels);
     </script>
