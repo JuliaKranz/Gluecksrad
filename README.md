@@ -1,4 +1,4 @@
-# adventureWheel Version 1.2 
+# adventureWheel 
 This project is currently in progress
 -started on July 27th and my planned end date is August 26th.
 
