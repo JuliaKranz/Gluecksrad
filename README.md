@@ -1,5 +1,6 @@
 # adventureWheel Version 1.2 
 This project is currently in progress
+-started on July 27th and my planned end date is August 26th.
 
 -- [Live Demo] (https://juliakranz.github.io/adventureWheel/) to see the wheel in action 
 
