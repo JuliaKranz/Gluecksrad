@@ -322,8 +322,47 @@
 
             if (data.action === 'show') {
                 showTotalSubsFor10Seconds();
+            } else if (data.action === 'spin') {
+                spinWheel();
+                sendCommandToOBS({
+                    'op': 6,
+                    'd': {
+                        'requestType': 'SetSceneItemProperties',
+                        'requestData': {
+                            'item': 'Glücksrad',
+                            'visible': true
+                        }
+                    }
+                });
             }
         }
+
+        function sendCommandToOBS(command) {
+            ws.send(JSON.stringify(command));
+        }
+
+        const ws = new WebSocket('ws://[2003:c8:a72a:3800:34be:10cf:db0:cf41]:4444');
+        ws.onopen = () => {
+            console.log('WebSocket verbunden');
+            ws.send(JSON.stringify({
+                'op': 1,
+                'd': {
+                    'auth': 'nySfgg7VlfFuQolM'
+                }
+            }));
+        };
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+
+            if (message.op === 2) {
+                console.log('Authentifizierung erfolgreich');
+            }
+
+            if (message.d && message.d.status === 'ok') {
+                console.log('Status OK:', message.d);
+            }
+        };
 
         setInterval(handleRequest, 1000);
 
